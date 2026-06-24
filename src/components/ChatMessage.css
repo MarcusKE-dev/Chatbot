@@ -1,33 +1,38 @@
 .user-message, .robot-message {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   width: 100%;
   max-width: 100%;
+  padding: 16px 8px;
   box-sizing: border-box;
   align-items: flex-start;
-  background-color: transparent !important;
+}
+
+.user-message {
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+}
+
+.robot-message {
+  justify-content: flex-start;
 }
 
 .message {
   flex: 1;
-  min-width: 0; 
-  padding: 0 !important;
-  background: transparent !important;
-  border: none !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  color: #ececec !important;
+  min-width: 0;
+  color: #ececec;
   font-size: 1rem;
   line-height: 1.6;
   word-break: break-word;
   overflow-wrap: break-word;
 }
 
-.message pre {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  overflow-x: auto;
+.user-message .message {
+  text-align: right;
+}
+
+.robot-message .message {
+  text-align: left;
 }
 
 .avatar {
@@ -36,4 +41,95 @@
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
+}
+
+.code-block-wrapper {
+  margin: 16px 0 !important;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  background-color: #1a1a1a;
+  
+  margin-left: -44px !important;
+  margin-right: -8px !important;
+  width: calc(100% + 52px) !important;
+}
+
+.user-message .code-block-wrapper {
+  margin-left: -8px !important;
+  margin-right: -44px !important;
+}
+
+.code-block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2f2f2f; 
+  padding: 8px 16px;
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: #b4b4b4;
+}
+
+.expand-toggle-btn {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.expand-toggle-btn:hover {
+  background-color: #424242;
+}
+
+.code-block-wrapper.collapsed .code-scroll-pane {
+  max-height: 300px;
+  overflow-y: hidden; 
+  position: relative;
+}
+
+.code-block-wrapper.collapsed .code-scroll-pane::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: linear-gradient(transparent, #1a1a1a);
+  pointer-events: none;
+}
+
+.code-block-wrapper.expanded .code-scroll-pane {
+  max-height: none; 
+  overflow-y: visible;
+}
+
+.code-scroll-pane > div {
+  margin: 0 !important;
+  padding: 16px !important;
+  background-color: transparent !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+  overflow-x: auto !important;
+  display: block !important;
+}
+
+.code-scroll-pane code {
+  display: block !important;
+  width: 100% !important;
+  text-align: left !important;
+  background: transparent !important;
+  padding: 0 !important;
+  white-space: pre-wrap !important;
+  word-break: break-all !important;
+}
+
+.code-scroll-pane > div *,
+.code-scroll-pane span {
+  background: transparent !important;
+  background-color: transparent !important;
 }
