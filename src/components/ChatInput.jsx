@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react' 
 import Groq from 'groq-sdk'
 import './ChatInput.css'
 
@@ -11,11 +11,22 @@ export function ChatInput({ chatMessages, setChatMessages, isLoading, setIsLoadi
   const [inputText, setInputText] = useState('')
   const [isRecording, setIsRecording] = useState(false)
   const [recognition, setRecognition] = useState(null)
+  
+  const textareaRef = useRef(null);
 
-  // ADDED BACK: This fixes the blank screen crash!
   function saveInputText(event) {
     setInputText(event.target.value);
   }
+
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = 'auto'; // Reset the baseline measurement footprint
+      
+      const nextHeight = Math.min(textarea.scrollHeight, 120);
+      textarea.style.height = `${nextHeight}px`;
+    }
+  }, [inputText]);
 
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -47,6 +58,13 @@ export function ChatInput({ chatMessages, setChatMessages, isLoading, setIsLoadi
     }
   };
 
+  function handleKeyDown(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault(); 
+      sendMessage();      
+    }
+  }
+
   async function sendMessage() {
     if (!inputText.trim() || isLoading) return;
 
@@ -65,7 +83,7 @@ export function ChatInput({ chatMessages, setChatMessages, isLoading, setIsLoadi
     setChatMessages(updatedMessagesWithUser);
     
     const currentInput = inputText;
-    setInputText('');
+    setInputText(''); 
     setIsLoading(true);
 
     const botMessageId = crypto.randomUUID();
@@ -111,24 +129,20 @@ export function ChatInput({ chatMessages, setChatMessages, isLoading, setIsLoadi
   return (
     <div className="chat-input-container">
       <div className="chat-input-wrapper">
-        <input
-          placeholder={isLoading ? "Thinking..." : "Message Chatbot..."}
+        <textarea
+          ref={textareaRef}
+          rows="1"
+          placeholder={isLoading ? "Thinking..." : "Message ChatGPT..."}
           onChange={saveInputText}
           value={inputText}
           disabled={isLoading}
           className="chat-input"
-          onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+          onKeyDown={handleKeyDown}
         />
         
-      <button 
-  onClick={toggleVoiceInput} 
-  className={`voice-btn ${isRecording ? 'recording' : ''}`} 
-  type="button"
-  title={isRecording ? "Stop Recording" : "Start Voice Input"}
->
-  {isRecording ? '🔴' : '🎙️'}
-</button>
-
+        <button onClick={toggleVoiceInput} className={`voice-btn ${isRecording ? 'recording' : ''}`} type="button">
+          {isRecording ? '🔴' : '🎙️'}
+        </button>
         
         <button 
           onClick={sendMessage} 
