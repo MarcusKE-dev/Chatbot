@@ -1,12 +1,11 @@
-
 .app-container {
   display: flex;
   flex-direction: column;
-  height: 100svh; /* Using 'svh' keeps mobile safari browser bars from breaking the container */
-  width: 100%;
-  max-width: 600px;
+  height: 100svh;
+  width: 100vw; 
+  max-width: 768px; 
   margin: 0 auto;
-  overflow: hidden; /* This is critical: stops the whole webpage frame from breaking or scrolling */
+  overflow: hidden;
   position: relative;
+  background-color: #212121;
 }
-

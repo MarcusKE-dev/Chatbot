@@ -12,7 +12,11 @@ export function ChatInput({ chatMessages, setChatMessages, isLoading, setIsLoadi
   const [isRecording, setIsRecording] = useState(false)
   const [recognition, setRecognition] = useState(null)
 
-  // Speech Recognition
+  // ADDED BACK: This fixes the blank screen crash!
+  function saveInputText(event) {
+    setInputText(event.target.value);
+  }
+
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (SpeechRecognition) {
@@ -52,7 +56,6 @@ export function ChatInput({ chatMessages, setChatMessages, isLoading, setIsLoadi
       id: crypto.randomUUID()
     };
 
-    // CONVERSATIONAL MEMORY
     const groqHistory = chatMessages.map(msg => ({
       role: msg.sender === 'user' ? 'user' : 'assistant',
       content: msg.message
@@ -65,7 +68,6 @@ export function ChatInput({ chatMessages, setChatMessages, isLoading, setIsLoadi
     setInputText('');
     setIsLoading(true);
 
-    // Create a temporary bot message container for streaming text
     const botMessageId = crypto.randomUUID();
     const placeholderBotMessage = {
       message: '',
@@ -76,7 +78,6 @@ export function ChatInput({ chatMessages, setChatMessages, isLoading, setIsLoadi
     setChatMessages([...updatedMessagesWithUser, placeholderBotMessage]);
 
     try {
-      // Add stream parameter
       const stream = await groq.chat.completions.create({
         messages: [
           { role: "system", content: "You are a helpful coding and general knowledge assistant." },
@@ -89,12 +90,10 @@ export function ChatInput({ chatMessages, setChatMessages, isLoading, setIsLoadi
 
       let accumulatedText = '';
 
-      // Loop through chunks of text as they arrive in real-time
       for await (const chunk of stream) {
         const textChunk = chunk.choices[0]?.delta?.content || '';
         accumulatedText += textChunk;
 
-        // Update the unique bot message placeholder dynamically
         setChatMessages((prevMessages) => 
           prevMessages.map((msg) => 
             msg.id === botMessageId ? { ...msg, message: accumulatedText } : msg
@@ -111,25 +110,29 @@ export function ChatInput({ chatMessages, setChatMessages, isLoading, setIsLoadi
 
   return (
     <div className="chat-input-container">
-      <input
-        placeholder={isLoading ? "AI typing..." : isRecording ? "Listening..." : "Enter your message"}
-        onChange={(e) => setInputText(e.target.value)}
-        value={inputText}
-        disabled={isLoading}
-        className="chat-input"
-        onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-      />
-      <button 
-        onClick={toggleVoiceInput} 
-        disabled={isLoading} 
-        className={`voice-btn ${isRecording ? 'recording' : ''}`}
-        title="Voice Input"
-      >
-        {isRecording ? '🔴' : '🎙️'}
-      </button>
-      <button onClick={sendMessage} disabled={isLoading || !inputText.trim()} className="send-btn">
-        Send
-      </button>
+      <div className="chat-input-wrapper">
+        <input
+          placeholder={isLoading ? "Thinking..." : "Message Chatbot..."}
+          onChange={saveInputText}
+          value={inputText}
+          disabled={isLoading}
+          className="chat-input"
+          onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+        />
+        
+        <button onClick={toggleVoiceInput} className="voice-btn" type="button">
+          🎙️
+        </button>
+        
+        <button 
+          onClick={sendMessage} 
+          disabled={isLoading || !inputText.trim()} 
+          className="send-btn"
+          type="button"
+        >
+          ↑
+        </button>
+      </div>
     </div>
-  )
+  );
 }
