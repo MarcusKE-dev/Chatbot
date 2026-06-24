@@ -120,9 +120,15 @@ export function ChatInput({ chatMessages, setChatMessages, isLoading, setIsLoadi
           onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
         />
         
-        <button onClick={toggleVoiceInput} className="voice-btn" type="button">
-          🎙️
-        </button>
+      <button 
+  onClick={toggleVoiceInput} 
+  className={`voice-btn ${isRecording ? 'recording' : ''}`} 
+  type="button"
+  title={isRecording ? "Stop Recording" : "Start Voice Input"}
+>
+  {isRecording ? '🔴' : '🎙️'}
+</button>
+
         
         <button 
           onClick={sendMessage} 
