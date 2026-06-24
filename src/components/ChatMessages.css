@@ -1,0 +1,48 @@
+  .messages-container{
+      flex-grow: 1;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      overflow-y: scroll;
+      scrollbar-width: none;
+    }
+    /* Container alignment for the dots */
+.typing-loader {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 16px;
+  background-color: #f1f1f1;
+  border-radius: 12px;
+  width: fit-content;
+}
+
+/* Designing the individual bouncing dots */
+.typing-loader span {
+  width: 8px;
+  height: 8px;
+  background-color: #666;
+  border-radius: 50%;
+  display: inline-block;
+  animation: bounce 1.4s infinite ease-in-out both;
+}
+
+/* Staggering the animation timeline for each dot */
+.typing-loader span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.typing-loader span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+/* Creating the physics of the bounce wave */
+@keyframes bounce {
+  0%, 80%, 100% { 
+    transform: scale(0);
+    opacity: 0.3;
+  } 
+  40% { 
+    transform: scale(1.0);
+    opacity: 1;
+  }
+}
