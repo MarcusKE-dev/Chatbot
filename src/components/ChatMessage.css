@@ -30,3 +30,27 @@
   font-family: monospace;
   font-size: 0.9rem;
 }
+.user-message, .robot-message {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  max-width: 85%; /* Keeps bubbles from touching the opposite side of the phone */
+}
+
+.user-message {
+  align-self: flex-end; 
+}
+
+.robot-message {
+  align-self: flex-start; 
+}
+
+.message {
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 0.95rem;
+  
+  
+  word-break: break-word;
+  overflow-wrap: break-word; 
+}

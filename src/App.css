@@ -7,4 +7,13 @@
       display: flex;
       flex-direction: column;
     }
-    
+    .app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100svh; /* Locks height to the phone's viewable screen */
+  width: 100vw;
+  max-width: 600px; /* Centers it nicely if opened on a desktop */
+  margin: 0 auto;
+  overflow: hidden; /* Prevents the whole browser screen from scrolling */
+  background-color: #ffffff;
+}

@@ -46,3 +46,15 @@
     opacity: 1;
   }
 }
+.messages-container {
+  flex: 1; 
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  
+  
+  -webkit-overflow-scrolling: touch; /* Enables fluid momentum scrolling on iPhones */
+  scroll-behavior: smooth;
+}
