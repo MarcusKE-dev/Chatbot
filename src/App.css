@@ -1,19 +1,12 @@
 
-    .app-container{
-      max-width: 600px;
-      margin-left: auto;
-      margin: auto;
-      height:100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    .app-container {
+.app-container {
   display: flex;
   flex-direction: column;
-  height: 100svh; /* Locks height to the phone's viewable screen */
-  width: 100vw;
-  max-width: 600px; /* Centers it nicely if opened on a desktop */
+  height: 100svh; /* Using 'svh' keeps mobile safari browser bars from breaking the container */
+  width: 100%;
+  max-width: 600px;
   margin: 0 auto;
-  overflow: hidden; /* Prevents the whole browser screen from scrolling */
-  background-color: #ffffff;
+  overflow: hidden; /* This is critical: stops the whole webpage frame from breaking or scrolling */
+  position: relative;
 }
+
